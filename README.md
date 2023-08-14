@@ -1,1 +1,1 @@
-# Next.JS 13 Full Stack App!
+# Next.JS Clerk Authentication!
