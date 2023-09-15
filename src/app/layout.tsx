@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Next.JS Authentication",
-  description: "Next.JS Authentication",
+  description: "Learning Next.JS Authentication",
 };
 
 export default function RootLayout({
