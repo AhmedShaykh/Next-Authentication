@@ -1,15 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
+import { connectDB } from "@/lib/db";
+import User from "@/lib/userModel";
 
 export async function POST(req: NextRequest) {
 
     try {
 
-        const { name, email, password } = await req.json();
+        await connectDB();
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const { email } = await req.json();
 
-        return NextResponse.json({ message: "User Registered...!" }, { status: 201 });
+        const user = await User.findOne({ email }).select("_id");
+
+        return NextResponse.json({ user });
 
     } catch (error) {
 
