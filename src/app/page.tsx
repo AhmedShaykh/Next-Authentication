@@ -1,10 +1,12 @@
 import React from "react";
+import LoginForm from "@/Components/LoginForm";
 
-const page = () => {
+const Home = () => {
     return (
-        <div>
-        </div>
+        <>
+            <LoginForm />
+        </>
     )
 };
 
-export default page;
+export default Home;
