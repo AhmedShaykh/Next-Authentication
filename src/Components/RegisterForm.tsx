@@ -1,7 +1,64 @@
+"use client";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import React from "react";
 
 const RegisterForm = () => {
+
+    const [name, setName] = useState<string>("");
+
+    const [email, setEmail] = useState<string>("");
+
+    const [password, setPassword] = useState<string>("");
+
+    const [error, setError] = useState<string>("");
+
+    const router = useRouter();
+
+    const handleSubmit = async (e: any) => {
+
+        e.preventDefault();
+
+        if (!name || !email || !password) {
+
+            setError("Something Missing!");
+
+            return;
+        }
+
+        try {
+
+            const res = await fetch("/api/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password
+                })
+            });
+
+            const form = e.target;
+
+            form.reset();
+
+            router.push("/");
+
+            if (!res.ok) {
+
+                console.log("User Registration Failed.");
+
+            }
+
+        } catch (error) {
+
+            console.log("Error During Registration: ", error);
+
+        }
+    };
+
     return (
         <div className="grid place-items-center h-screen">
             <div className="shadow-md shadow-slate-700 py-5 px-6 rounded-lg border-t-4 border-gray-600 w-[500px]">
@@ -11,21 +68,25 @@ const RegisterForm = () => {
 
                 <form
                     className="flex flex-col gap-6"
+                    onSubmit={handleSubmit}
                 >
                     <input
                         className="p-3 text-black font-semibold"
+                        onChange={(e) => setName(e.target.value)}
                         placeholder="Enter Your Full Name"
                         type="text"
                     />
 
                     <input
                         className="p-3 text-black font-semibold"
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter Your Email"
                         type="email"
                     />
 
                     <input
                         className="p-3 text-black font-semibold"
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="Enter Your Password"
                         type="password"
                     />
@@ -36,9 +97,11 @@ const RegisterForm = () => {
                         Login
                     </button>
 
-                    <h2 className="text-red-500 text-md font-semibold text-center rounded-md">
-                        Error
-                    </h2>
+                    {error && (
+                        <h2 className="text-red-500 text-md font-semibold text-center rounded-md">
+                            {error}
+                        </h2>
+                    )}
 
                     <Link className="text-md text-white font-semibold mt-2 flex justify-between" href={"/"}>
                         Already Have An Account?
