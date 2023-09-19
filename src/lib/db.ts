@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const { DATABASE_URL } = process.env;
+const URL = process.env.DATABASE_URL;
 
-if (!DATABASE_URL) {
+if (!URL) {
 
     throw new Error("Invalid Environment Variable: DATABASE_URL ");
 
@@ -12,7 +12,7 @@ export const connectDB = async () => {
 
     try {
 
-        const { connection } = await mongoose.connect(DATABASE_URL);
+        const { connection } = await mongoose.connect(URL);
 
         if (connection.readyState === 1) {
 
