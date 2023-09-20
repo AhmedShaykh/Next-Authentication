@@ -1,6 +1,68 @@
-import { authOptions } from "@/lib/auth";
-import NextAuth from "next-auth";
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { IUser } from "../../../../Types";
+import { connectDB } from "@/lib/db";
+import User from "@/lib/userModel";
+import { compare } from "bcryptjs";
 
-const handler = NextAuth(authOptions);
+export const authOptions: NextAuthOptions = {
+    providers: [
+        // CredentialsProvider({
+        //     id: "credentials",
+        //     name: "Credentials",
+        //     credentials: {
+        //         email: { label: "Email", type: "text" },
+        //         password: { label: "Password", type: "password" }
+        //     },
+        //     async authorize(credentials) {
 
-export { handler as GET, handler as POST };
+        //         await connectDB().catch(err => { throw new Error(err) });
+
+        //         const user = await User.findOne({
+        //             email: credentials?.email
+        //         }).select("+password");
+
+        //         if (!user) {
+
+        //             throw new Error("Invalid Credentials");
+
+        //         }
+
+        //         const isPasswordCorrect = await compare(credentials!.password, user.password);
+
+        //         if (!isPasswordCorrect) {
+
+        //             throw new Error("Invalid Credentials");
+
+        //         }
+
+        //         return user;
+        //     }
+        // })
+    ],
+    // pages: {
+    //     signIn: "/"
+    // },
+    // session: {
+    //     strategy: "jwt"
+    // },
+    // secret: process.env.NEXTAUTH_SECRET,
+    // callbacks: {
+    //     jwt: async ({ token, user }) => {
+
+    //         user && (token.user = user);
+
+    //         return token;
+
+    //     },
+    //     session: async ({ session, token }) => {
+
+    //         const user = token.user as IUser;
+
+    //         session.user = user;
+
+    //         return session;
+
+    //     }
+    // }
+};
