@@ -10,7 +10,6 @@ const UserSchema = new Schema({
     fullName: {
         type: String,
         required: [true, "Full Name Is Required"],
-        minLength: [4, "Full Name Should Be Atleast 4 Characters Long"],
         maxLength: [30, "Full Name Should Be Less Than 30 Characters"]
     },
     password: {

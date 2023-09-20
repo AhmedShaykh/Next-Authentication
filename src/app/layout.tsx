@@ -1,4 +1,4 @@
-// import AuthProvider from "@/Components/AuthProvider";
+import AuthProvider from "@/Components/AuthProvider";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -11,17 +11,17 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode
 }) {
   return (
     <html lang="en">
-      {/* <AuthProvider> */}
-      <body className={`${inter.className} bg-zinc-950 text-slate-400`}>
-        {children}
-      </body>
-      {/* </AuthProvider> */}
+      <AuthProvider>
+        <body className={`${inter.className} bg-zinc-950 text-slate-400`}>
+          {children}
+        </body>
+      </AuthProvider>
     </html>
   )
 };

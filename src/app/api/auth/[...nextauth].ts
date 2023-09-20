@@ -1,68 +1,62 @@
-import { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { IUser } from "../../../../Types";
 import { connectDB } from "@/lib/db";
 import User from "@/lib/userModel";
 import { compare } from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
     providers: [
-        // CredentialsProvider({
-        //     id: "credentials",
-        //     name: "Credentials",
-        //     credentials: {
-        //         email: { label: "Email", type: "text" },
-        //         password: { label: "Password", type: "password" }
-        //     },
-        //     async authorize(credentials) {
+        CredentialsProvider({
+            id: "credentials",
+            name: "Credentials",
+            credentials: {
+                email: {
+                    label: "Email",
+                    type: "text",
+                },
+                password: {
+                    label: "Password",
+                    type: "passord"
+                }
+            },
+            async authorize(credentials) {
 
-        //         await connectDB().catch(err => { throw new Error(err) });
+                const email = credentials?.email;
 
-        //         const user = await User.findOne({
-        //             email: credentials?.email
-        //         }).select("+password");
+                const password = credentials!.password;
 
-        //         if (!user) {
+                await connectDB().catch(err => { throw new Error(err) });
 
-        //             throw new Error("Invalid Credentials");
+                const user = await User.findOne({ email });
 
-        //         }
+                if (!user) {
 
-        //         const isPasswordCorrect = await compare(credentials!.password, user.password);
+                    throw new Error("Invalid Credentials");
 
-        //         if (!isPasswordCorrect) {
+                }
 
-        //             throw new Error("Invalid Credentials");
+                const isPasswordCorrect = await compare(password, user.password);
 
-        //         }
+                if (!isPasswordCorrect) {
 
-        //         return user;
-        //     }
-        // })
+                    throw new Error("Invalid Credentials");
+
+                }
+
+                return user;
+
+            }
+        })
     ],
-    // pages: {
-    //     signIn: "/"
-    // },
-    // session: {
-    //     strategy: "jwt"
-    // },
-    // secret: process.env.NEXTAUTH_SECRET,
-    // callbacks: {
-    //     jwt: async ({ token, user }) => {
-
-    //         user && (token.user = user);
-
-    //         return token;
-
-    //     },
-    //     session: async ({ session, token }) => {
-
-    //         const user = token.user as IUser;
-
-    //         session.user = user;
-
-    //         return session;
-
-    //     }
-    // }
+    session: {
+        strategy: "jwt",
+    },
+    secret: process.env.NEXTAUTH_SECRET,
+    pages: {
+        signIn: "/",
+    }
 };
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };

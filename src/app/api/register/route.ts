@@ -19,14 +19,6 @@ export async function POST(req: NextRequest) {
 
         }
 
-        if (password.length < 6) {
-
-            return NextResponse.json(
-                { message: "Password Should Be 6 Characters Long" }, { status: 409 }
-            );
-
-        }
-
         const hashedPassword = await hash(password, 12);
 
         await User.create({
