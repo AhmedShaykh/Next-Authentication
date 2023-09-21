@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
         await connectDB();
 
-        const { fullName, email, password } = await req.json();
+        const { name, email, password } = await req.json();
 
         const userExists = await User.findOne({ email });
 
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
         const hashedPassword = await hash(password, 12);
 
         await User.create({
-            fullName,
+            name,
             email,
             password: hashedPassword
         });

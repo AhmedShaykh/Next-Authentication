@@ -21,39 +21,39 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials) {
 
-                const email = credentials?.email;
+                await connectDB();
 
-                const password = credentials!.password;
-
-                await connectDB().catch(err => { throw new Error(err) });
-
-                const user = await User.findOne({ email });
+                const user = await User.findOne({
+                    email: credentials?.email
+                }).select("+password");
 
                 if (!user) {
 
-                    throw new Error("Invalid Credentials");
+                    throw new Error("Invalid Email");
 
                 }
 
-                const isPasswordCorrect = await compare(password, user.password);
+                const isPasswordCorrect = await compare(credentials!.password, user.password);
 
                 if (!isPasswordCorrect) {
 
-                    throw new Error("Invalid Credentials");
+                    throw new Error("Invalid Password");
 
                 }
 
                 return user;
-
             }
         })
     ],
+    pages: {
+        signIn: "/",
+    },
     session: {
         strategy: "jwt",
     },
     secret: process.env.NEXTAUTH_SECRET,
-    pages: {
-        signIn: "/",
+    jwt: {
+        secret: process.env.NEXTAUTH_JWT_SECRET,
     }
 };
 

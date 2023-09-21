@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 
 const LoginForm = () => {
@@ -23,6 +24,21 @@ const LoginForm = () => {
 
             return;
         }
+
+        const res = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+        });
+
+        if (res?.error) {
+
+            setError("Invalid Credentials");
+
+            return;
+        }
+
+        router.push("/dashboard");
 
     };
 

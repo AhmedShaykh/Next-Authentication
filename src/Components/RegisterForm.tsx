@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const RegisterForm = () => {
 
-    const [fullName, setFullName] = useState<string>("");
+    const [name, setName] = useState<string>("");
 
     const [email, setEmail] = useState<string>("");
 
@@ -19,7 +19,7 @@ const RegisterForm = () => {
 
         e.preventDefault();
 
-        if (!fullName || !email || !password) {
+        if (!name || !email || !password) {
 
             setError("Something Missing!");
 
@@ -51,7 +51,7 @@ const RegisterForm = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    fullName,
+                    name,
                     email,
                     password
                 })
@@ -89,7 +89,7 @@ const RegisterForm = () => {
                 >
                     <input
                         className="p-3 text-black font-semibold"
-                        onChange={(e) => setFullName(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}
                         placeholder="Enter Your Full Name"
                         type="text"
                     />
